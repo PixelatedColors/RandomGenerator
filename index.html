@@ -3,19 +3,52 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dumb RNG Predictions</title>
+  <title>Dumb AI Predictions</title>
   <style>
-    body { font-family: Arial, sans-serif; background:#f4f4f9; margin:0; padding:20px; text-align:center; }
-    h1 { color:#333; }
+    body { 
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background: linear-gradient(135deg, #1e0033, #330066, #660099);
+      color: white;
+      margin:0; 
+      padding:20px; 
+      text-align:center; 
+      overflow:hidden;
+      height: 100vh;
+    }
+    h1 { color:#ffccff; text-shadow: 0 0 10px #ff66ff; }
     .controls { margin:20px 0; }
-    input, button { padding:10px; margin:5px; font-size:16px; }
-    .prediction { background:white; margin:10px auto; padding:15px; max-width:500px; border-radius:10px; box-shadow:0 2px 6px rgba(0,0,0,0.1); }
-    .prediction button { margin-top:10px; }
+    input, button { padding:10px; margin:5px; font-size:16px; border-radius:6px; border:none; }
+    input { width:250px; }
+    button { background:#ff66ff; color:white; cursor:pointer; transition:0.2s; }
+    button:hover { background:#ff99ff; }
+    .prediction { 
+      background:rgba(255,255,255,0.1); 
+      margin:10px auto; 
+      padding:15px; 
+      max-width:500px; 
+      border-radius:10px; 
+      box-shadow:0 2px 6px rgba(0,0,0,0.4);
+    }
+    .prediction button { margin-top:10px; background:#6600cc; }
+
+    /* Floating images */
+    .floating-img {
+      position: absolute;
+      width: 80px;
+      height: 80px;
+      opacity: 0.7;
+      pointer-events: none;
+      animation: float linear infinite;
+    }
+    @keyframes float {
+      from { transform: translate(0,0) rotate(0deg); }
+      to { transform: translate(100vw, -100vh) rotate(360deg); }
+    }
   </style>
 </head>
 <body>
 
-  <h1>Dumb RNG Predictions</h1>
+  <h1>🔮 Dumb AI Predictions</h1>
 
   <div class="controls">
     <input type="text" id="topicInput" placeholder="Enter a topic">
@@ -25,6 +58,7 @@
     <br>
     <button onclick="generatePrediction()">Generate Prediction</button>
     <button onclick="generateMany()">Surprise x10</button>
+    <button onclick="clearPredictions()">Clear</button>
   </div>
 
   <div id="predictions"></div>
@@ -44,12 +78,12 @@
         "is secretly powered by potatoes",
         "will collapse under the weight of cheese",
         "will time travel back to 1999",
-        "will merge with a dog and start reproducing",
-        "will be FORSAKEN",
-        "will float away into a single mothers bedroom",
-        "will explode with diarrhea",
-        "will turn into a LOW TAPER FADE",
-        "will become the new greatest gooner"
+        "will merge with TikTok and start singing",
+        "will be outlawed by ducks",
+        "will float away into space",
+        "will explode with confetti",
+        "will turn into a giant pancake",
+        "will become the new national anthem"
       ];
       const idx = Math.floor(Math.random() * nonsense.length);
       return `${topic || "The world"} ${nonsense[idx]} (Absurdity ${absurdity})`;
@@ -75,6 +109,33 @@
         generatePrediction();
       }
     }
+
+    function clearPredictions() {
+      predictionsDiv.innerHTML = "";
+    }
+
+    // === Floating Images ===
+    const imgLinks = [
+      "https://i.imgur.com/3ZQ3ZpC.png", // replace with your own
+      "https://i.imgur.com/1z6iJ6R.png", 
+      "https://i.imgur.com/2m7WJxT.png"
+    ];
+
+    function spawnFloatingImage() {
+      const img = document.createElement("img");
+      img.src = imgLinks[Math.floor(Math.random() * imgLinks.length)];
+      img.className = "floating-img";
+      img.style.top = Math.random() * window.innerHeight + "px";
+      img.style.left = Math.random() * window.innerWidth + "px";
+      img.style.animationDuration = (10 + Math.random() * 20) + "s";
+      document.body.appendChild(img);
+
+      // Remove after animation ends
+      setTimeout(() => img.remove(), 30000);
+    }
+
+    // spawn a new image every 3 seconds
+    setInterval(spawnFloatingImage, 3000);
   </script>
 </body>
 </html>
