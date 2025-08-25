@@ -2,140 +2,136 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dumb AI Predictions</title>
   <style>
-    body { 
-      font-family: 'Comic Sans MS', cursive, sans-serif;
-      background: linear-gradient(135deg, #1e0033, #330066, #660099);
-      color: white;
-      margin:0; 
-      padding:20px; 
-      text-align:center; 
-      overflow:hidden;
+    body {
+      margin: 0;
       height: 100vh;
+      background: linear-gradient(135deg, #ffecd2, #fcb69f);
+      overflow: hidden;
+      font-family: Arial, sans-serif;
     }
-    h1 { color:#ffccff; text-shadow: 0 0 10px #ff66ff; }
-    .controls { margin:20px 0; }
-    input, button { padding:10px; margin:5px; font-size:16px; border-radius:6px; border:none; }
-    input { width:250px; }
-    button { background:#ff66ff; color:white; cursor:pointer; transition:0.2s; }
-    button:hover { background:#ff99ff; }
-    .prediction { 
-      background:rgba(255,255,255,0.1); 
-      margin:10px auto; 
-      padding:15px; 
-      max-width:500px; 
-      border-radius:10px; 
-      box-shadow:0 2px 6px rgba(0,0,0,0.4);
-    }
-    .prediction button { margin-top:10px; background:#6600cc; }
 
-    /* Floating images */
-    .floating-img {
-      position: absolute;
-      width: 80px;
-      height: 80px;
-      opacity: 0.7;
-      pointer-events: none;
-      animation: float linear infinite;
+    .container {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 20px;
+      max-width: 600px;
+      margin: 40px auto;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
     }
-    @keyframes float {
-      from { transform: translate(0,0) rotate(0deg); }
-      to { transform: translate(100vw, -100vh) rotate(360deg); }
+
+    h1 {
+      font-size: 2em;
+      margin-bottom: 10px;
+    }
+
+    input, button {
+      padding: 10px;
+      margin: 10px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1em;
+    }
+
+    button {
+      background: #ff7e5f;
+      color: white;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    button:hover {
+      transform: scale(1.1);
+    }
+
+    #predictions {
+      margin-top: 20px;
+      font-size: 1.2em;
+    }
+
+    .floating-image {
+      position: absolute;
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 15px;
+      pointer-events: none;
     }
   </style>
 </head>
 <body>
-
-  <h1>🔮 Dumb AI Predictions</h1>
-
-  <div class="controls">
-    <input type="text" id="topicInput" placeholder="Enter a topic">
-    <br>
-    <label>Absurdity: <span id="absurdityValue">3</span></label><br>
-    <input type="range" id="absurditySlider" min="1" max="5" value="3">
-    <br>
-    <button onclick="generatePrediction()">Generate Prediction</button>
+  <div class="container">
+    <h1>🤖 Dumb AI Predictions</h1>
+    <input type="text" id="topic" placeholder="Enter a topic..." />
+    <input type="range" id="absurdity" min="1" max="5" value="3" />
+    <button onclick="generatePrediction()">Generate</button>
     <button onclick="generateMany()">Surprise x10</button>
-    <button onclick="clearPredictions()">Clear</button>
+    <div id="predictions"></div>
   </div>
 
-  <div id="predictions"></div>
-
   <script>
-    const predictionsDiv = document.getElementById("predictions");
-    const absurditySlider = document.getElementById("absurditySlider");
-    const absurdityValue = document.getElementById("absurdityValue");
+    const imageUrls = [
+      "https://i.pinimg.com/736x/f5/74/ca/f574ca9d10e09cd90512b9c1c1a8021e.jpg",
+      "https://i.pinimg.com/736x/11/a2/3f/11a23f7e3a049c6571b72e80137a82ff.jpg",
+      "https://i.pinimg.com/736x/60/73/bc/6073bc854c786c67fff924903d0badb3.jpg"
+    ];
 
-    absurditySlider.oninput = () => {
-      absurdityValue.textContent = absurditySlider.value;
-    };
+    function createFloatingImage(url) {
+      const img = document.createElement("img");
+      img.src = url;
+      img.className = "floating-image";
+      document.body.appendChild(img);
 
-    function dumbPredict(topic, absurdity) {
-      const nonsense = [
-        "will be replaced by dancing llamas",
-        "is secretly powered by potatoes",
-        "will collapse under the weight of cheese",
-        "will time travel back to 1999",
-        "will merge with TikTok and start singing",
-        "will be outlawed by ducks",
-        "will float away into space",
-        "will explode with confetti",
-        "will turn into a giant pancake",
-        "will become the new national anthem"
-      ];
-      const idx = Math.floor(Math.random() * nonsense.length);
-      return `${topic || "The world"} ${nonsense[idx]} (Absurdity ${absurdity})`;
+      let x = Math.random() * window.innerWidth;
+      let y = Math.random() * window.innerHeight;
+      let dx = (Math.random() - 0.5) * 4; // random speed/direction
+      let dy = (Math.random() - 0.5) * 4;
+
+      function animate() {
+        x += dx;
+        y += dy;
+
+        if (x < 0 || x + 120 > window.innerWidth) dx *= -1;
+        if (y < 0 || y + 120 > window.innerHeight) dy *= -1;
+
+        img.style.left = x + "px";
+        img.style.top = y + "px";
+
+        requestAnimationFrame(animate);
+      }
+      animate();
     }
 
+    imageUrls.forEach(url => createFloatingImage(url));
+
     function generatePrediction() {
-      const topic = document.getElementById("topicInput").value;
-      const absurdity = absurditySlider.value;
-      const p = document.createElement("div");
-      p.className = "prediction";
-      const text = document.createElement("p");
-      text.textContent = dumbPredict(topic, absurdity);
-      const copyBtn = document.createElement("button");
-      copyBtn.textContent = "Copy";
-      copyBtn.onclick = () => navigator.clipboard.writeText(text.textContent);
-      p.appendChild(text);
-      p.appendChild(copyBtn);
-      predictionsDiv.prepend(p);
+      const topic = document.getElementById("topic").value || "everything";
+      const absurdity = document.getElementById("absurdity").value;
+      const output = document.getElementById("predictions");
+
+      const silly = [
+        "will turn into a sandwich by 2030.",
+        "will be replaced by squirrels in leadership.",
+        "is secretly plotting with toasters.",
+        "will legally become a type of soup.",
+        "will invent teleportation but only for socks."
+      ];
+
+      const choice = silly[Math.floor(Math.random() * silly.length)];
+      output.innerHTML = `<p><b>${topic}</b> ${choice} (Absurdity: ${absurdity})</p>`;
     }
 
     function generateMany() {
+      const output = document.getElementById("predictions");
+      output.innerHTML = "";
       for (let i = 0; i < 10; i++) {
         generatePrediction();
       }
     }
-
-    function clearPredictions() {
-      predictionsDiv.innerHTML = "";
-    }
-
-    // === Floating Images ===
-    const imgLinks = [
-      "https://i.pinimg.com/736x/f5/74/ca/f574ca9d10e09cd90512b9c1c1a8021e.jpg", // replace with your own
-      "https://i.pinimg.com/736x/60/73/bc/6073bc854c786c67fff924903d0badb3.jpg", 
-      "https://i.pinimg.com/736x/11/a2/3f/11a23f7e3a049c6571b72e80137a82ff.jpg"
-    ];
-
-    function spawnFloatingImage() {
-      const img = document.createElement("img");
-      img.src = imgLinks[Math.floor(Math.random() * imgLinks.length)];
-      img.className = "floating-img";
-      img.style.top = Math.random() * window.innerHeight + "px";
-      img.style.left = Math.random() * window.innerWidth + "px";
-      img.style.animationDuration = (10 + Math.random() * 20) + "s";
-      document.body.appendChild(img);
-
-      // Remove after animation ends
-      setTimeout(() => img.remove(), 30000);
-    }
-
-    // spawn a new image every 3 seconds
-    setInterval(spawnFloatingImage, 1000);
   </script>
 </body>
 </html>
