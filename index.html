@@ -142,20 +142,6 @@
       document.querySelectorAll(".floating, .prophecy").forEach(el => el.remove());
       document.getElementById("output").textContent = "";
     }
-    // 🎵 Random silly sounds every 5 seconds
-const soundUrls = [
-  "https://www.myinstants.com/media/sounds/cartoon-boing.mp3",
-  "https://www.myinstants.com/media/sounds/vine-boom.mp3",
-  "https://www.myinstants.com/media/sounds/airhorn.mp3",
-  "https://www.myinstants.com/media/sounds/fart-with-reverb.mp3"
-];
-
-function playRandomSound() {
-  const audio = new Audio(soundUrls[Math.floor(Math.random() * soundUrls.length)]);
-  audio.play();
-}
-
-setInterval(playRandomSound, 5000); // play every 5 seconds
   </script>
 </body>
 </html>
