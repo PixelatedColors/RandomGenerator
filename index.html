@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dumb AI Predictions</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to bottom, #0c0c0c, #1a1a1a);
+      color: #eee;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: 20px;
+    }
+    .container { max-width: 700px; width: 100%; }
+    h1 { text-align: center; font-size: 2em; }
+    .controls {
+      background: #222; padding: 15px; border-radius: 12px;
+      box-shadow: 0 0 10px rgba(255,255,255,0.05); margin-top: 20px;
+    }
+    .controls input, .controls button {
+      margin: 5px 0; padding: 10px; border-radius: 8px; border: none;
+    }
+    .controls input[type="text"] { width: 100%; }
+    .controls input[type="number"], .controls input[type="range"] { width: 100%; }
+    button { cursor: pointer; background: white; color: black; font-weight: bold; }
+    .prediction {
+      background: #111; margin-top: 15px; padding: 15px; border-radius: 12px;
+      white-space: pre-wrap; font-family: monospace;
+    }
+    .footer { text-align: center; margin-top: 20px; font-size: 0.8em; opacity: 0.6; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔮 Dumb AI Predictions</h1>
+    <p style="text-align:center;opacity:0.8;">Absolutely incorrect, thoroughly confident. For entertainment only 😂</p>
+
+    <div class="controls">
+      <label>Topic (optional)</label>
+      <input type="text" id="topic" placeholder="e.g., homework, crypto, pigeons">
+
+      <label>Absurdity Level: <span id="absurdityLabel">3</span></label>
+      <input type="range" id="absurdity" min="1" max="5" value="3" />
+
+      <label>How many predictions?</label>
+      <input type="number" id="count" min="1" max="20" value="1" />
+
+      <button onclick="generate()">Generate</button>
+      <button onclick="surprise()">Surprise x10</button>
+      <button onclick="clearAll()">Clear</button>
+    </div>
+
+    <div id="predictions"></div>
+
+    <div class="footer">Built for shenanigans. No warranties, only vibes.</div>
+  </div>
+
+  <!-- Link external JS -->
+  <script src="script.js"></script>
+</body>
+</html>
