@@ -2,135 +2,145 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Dumb AI Predictions</title>
+  <title>Silly Shenanigans</title>
   <style>
     body {
       margin: 0;
       height: 100vh;
-      background: linear-gradient(135deg, #ffecd2, #fcb69f);
       overflow: hidden;
-      font-family: Arial, sans-serif;
-    }
-
-    .container {
-      position: relative;
-      z-index: 10;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4, #fbc2eb, #a6c1ee);
+      font-family: "Comic Sans MS", cursive, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       text-align: center;
-      padding: 20px;
-      background: rgba(255, 255, 255, 0.8);
-      border-radius: 20px;
-      max-width: 600px;
-      margin: 40px auto;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
     }
 
     h1 {
-      font-size: 2em;
-      margin-bottom: 10px;
-    }
-
-    input, button {
-      padding: 10px;
-      margin: 10px;
-      border: none;
-      border-radius: 8px;
-      font-size: 1em;
+      color: #fff;
+      font-size: 3rem;
+      text-shadow: 2px 2px #000;
     }
 
     button {
-      background: #ff7e5f;
-      color: white;
+      margin: 10px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 15px;
+      font-size: 1.2rem;
       cursor: pointer;
+      background: #fff;
+      color: #333;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.3);
       transition: transform 0.2s;
     }
 
     button:hover {
       transform: scale(1.1);
+      background: #ffe066;
     }
 
-    #predictions {
+    #output {
       margin-top: 20px;
-      font-size: 1.2em;
+      font-size: 1.4rem;
+      color: #222;
+      font-weight: bold;
     }
 
-    .floating-image {
+    .floating {
       position: absolute;
-      width: 120px;
-      height: 120px;
-      object-fit: cover;
-      border-radius: 15px;
+      width: 100px;
+      height: auto;
       pointer-events: none;
+      animation: floatRandom linear infinite;
+    }
+
+    @keyframes floatRandom {
+      from { transform: translate(0, 0) rotate(0deg); }
+      to { transform: translate(var(--x), var(--y)) rotate(720deg); }
+    }
+
+    .prophecy {
+      position: absolute;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: white;
+      text-shadow: 2px 2px black;
+      animation: fadeout 5s forwards;
+    }
+
+    @keyframes fadeout {
+      0% { opacity: 1; }
+      100% { opacity: 0; transform: translateY(-100px); }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>🤖 Dumb AI Predictions</h1>
-    <input type="text" id="topic" placeholder="Enter a topic..." />
-    <input type="range" id="absurdity" min="1" max="5" value="3" />
-    <button onclick="generatePrediction()">Generate</button>
-    <button onclick="generateMany()">Surprise x10</button>
-    <div id="predictions"></div>
+  <h1>🤪 Welcome to Shenanigans 🤪</h1>
+  <div>
+    <button onclick="randomPrediction()">🔮 Random Prediction</button>
+    <button onclick="summonProphecy()">✨ Summon Prophecy</button>
+    <button onclick="summonChaos()">🎉 Summon Chaos Images</button>
+    <button onclick="clearAll()">🧹 Clear Everything</button>
   </div>
+  <div id="output"></div>
 
   <script>
-    const imageUrls = [
+    const predictions = [
+      "You will trip over nothing tomorrow.",
+      "A pigeon will judge you silently.",
+      "Your fridge is plotting against you.",
+      "You’ll dream of spaghetti tonight.",
+      "Someone will sneeze at exactly 3:17 PM."
+    ];
+
+    const prophecies = [
+      "🍕 All hail the pizza overlord!",
+      "🐸 Frogs know your secrets!",
+      "🎩 Top hats are coming back in style!",
+      "🪩 Chaos reigns eternal!",
+      "🦖 Dinosaurs will text you soon!"
+    ];
+
+    const chaosImages = [
       "https://i.pinimg.com/736x/f5/74/ca/f574ca9d10e09cd90512b9c1c1a8021e.jpg",
       "https://i.pinimg.com/736x/11/a2/3f/11a23f7e3a049c6571b72e80137a82ff.jpg",
       "https://i.pinimg.com/736x/60/73/bc/6073bc854c786c67fff924903d0badb3.jpg"
     ];
 
-    function createFloatingImage(url) {
+    function randomPrediction() {
+      const choice = predictions[Math.floor(Math.random() * predictions.length)];
+      document.getElementById("output").textContent = choice;
+    }
+
+    function summonProphecy() {
+      const choice = prophecies[Math.floor(Math.random() * prophecies.length)];
+      const span = document.createElement("div");
+      span.className = "prophecy";
+      span.textContent = choice;
+      span.style.left = Math.random() * window.innerWidth + "px";
+      span.style.top = Math.random() * window.innerHeight + "px";
+      document.body.appendChild(span);
+      setTimeout(() => span.remove(), 5000);
+    }
+
+    function summonChaos() {
       const img = document.createElement("img");
-      img.src = url;
-      img.className = "floating-image";
+      img.src = chaosImages[Math.floor(Math.random() * chaosImages.length)];
+      img.className = "floating";
+      img.style.left = Math.random() * window.innerWidth + "px";
+      img.style.top = Math.random() * window.innerHeight + "px";
+      img.style.setProperty("--x", (Math.random() * 400 - 200) + "px");
+      img.style.setProperty("--y", (Math.random() * 400 - 200) + "px");
+      img.style.animationDuration = (5 + Math.random() * 5) + "s";
       document.body.appendChild(img);
-
-      let x = Math.random() * window.innerWidth;
-      let y = Math.random() * window.innerHeight;
-      let dx = (Math.random() - 0.5) * 4; // random speed/direction
-      let dy = (Math.random() - 0.5) * 4;
-
-      function animate() {
-        x += dx;
-        y += dy;
-
-        if (x < 0 || x + 120 > window.innerWidth) dx *= -1;
-        if (y < 0 || y + 120 > window.innerHeight) dy *= -1;
-
-        img.style.left = x + "px";
-        img.style.top = y + "px";
-
-        requestAnimationFrame(animate);
-      }
-      animate();
+      setTimeout(() => img.remove(), 10000);
     }
 
-    imageUrls.forEach(url => createFloatingImage(url));
-
-    function generatePrediction() {
-      const topic = document.getElementById("topic").value || "everything";
-      const absurdity = document.getElementById("absurdity").value;
-      const output = document.getElementById("predictions");
-
-      const silly = [
-        "will turn into a sandwich by 2030.",
-        "will be replaced by squirrels in leadership.",
-        "is secretly plotting with toasters.",
-        "will legally become a type of soup.",
-        "will invent teleportation but only for socks."
-      ];
-
-      const choice = silly[Math.floor(Math.random() * silly.length)];
-      output.innerHTML = `<p><b>${topic}</b> ${choice} (Absurdity: ${absurdity})</p>`;
-    }
-
-    function generateMany() {
-      const output = document.getElementById("predictions");
-      output.innerHTML = "";
-      for (let i = 0; i < 10; i++) {
-        generatePrediction();
-      }
+    function clearAll() {
+      document.querySelectorAll(".floating, .prophecy").forEach(el => el.remove());
+      document.getElementById("output").textContent = "";
     }
   </script>
 </body>
