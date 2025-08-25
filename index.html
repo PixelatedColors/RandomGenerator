@@ -1,65 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dumb AI Predictions</title>
   <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(to bottom, #0c0c0c, #1a1a1a);
-      color: #eee;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      padding: 20px;
-    }
-    .container { max-width: 700px; width: 100%; }
-    h1 { text-align: center; font-size: 2em; }
-    .controls {
-      background: #222; padding: 15px; border-radius: 12px;
-      box-shadow: 0 0 10px rgba(255,255,255,0.05); margin-top: 20px;
-    }
-    .controls input, .controls button {
-      margin: 5px 0; padding: 10px; border-radius: 8px; border: none;
-    }
-    .controls input[type="text"] { width: 100%; }
-    .controls input[type="number"], .controls input[type="range"] { width: 100%; }
-    button { cursor: pointer; background: white; color: black; font-weight: bold; }
-    .prediction {
-      background: #111; margin-top: 15px; padding: 15px; border-radius: 12px;
-      white-space: pre-wrap; font-family: monospace;
-    }
-    .footer { text-align: center; margin-top: 20px; font-size: 0.8em; opacity: 0.6; }
+    body { font-family: Arial, sans-serif; background:#f4f4f9; margin:0; padding:20px; text-align:center; }
+    h1 { color:#333; }
+    .controls { margin:20px 0; }
+    input, button { padding:10px; margin:5px; font-size:16px; }
+    .prediction { background:white; margin:10px auto; padding:15px; max-width:500px; border-radius:10px; box-shadow:0 2px 6px rgba(0,0,0,0.1); }
+    .prediction button { margin-top:10px; }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>🔮 Dumb AI Predictions</h1>
-    <p style="text-align:center;opacity:0.8;">Absolutely incorrect, thoroughly confident. For entertainment only 😂</p>
 
-    <div class="controls">
-      <label>Topic (optional)</label>
-      <input type="text" id="topic" placeholder="e.g., homework, crypto, pigeons">
+  <h1>🔮 Dumb AI Predictions</h1>
 
-      <label>Absurdity Level: <span id="absurdityLabel">3</span></label>
-      <input type="range" id="absurdity" min="1" max="5" value="3" />
-
-      <label>How many predictions?</label>
-      <input type="number" id="count" min="1" max="20" value="1" />
-
-      <button onclick="generate()">Generate</button>
-      <button onclick="surprise()">Surprise x10</button>
-      <button onclick="clearAll()">Clear</button>
-    </div>
-
-    <div id="predictions"></div>
-
-    <div class="footer">Built for shenanigans. No warranties, only vibes.</div>
+  <div class="controls">
+    <input type="text" id="topicInput" placeholder="Enter a topic">
+    <br>
+    <label>Absurdity: <span id="absurdityValue">3</span></label><br>
+    <input type="range" id="absurditySlider" min="1" max="5" value="3">
+    <br>
+    <button onclick="generatePrediction()">Generate Prediction</button>
+    <button onclick="generateMany()">Surprise x10</button>
   </div>
 
-  <!-- Link external JS -->
-  <script src="script.js"></script>
+  <div id="predictions"></div>
+
+  <script>
+    const predictionsDiv = document.getElementById("predictions");
+    const absurditySlider = document.getElementById("absurditySlider");
+    const absurdityValue = document.getElementById("absurdityValue");
+
+    absurditySlider.oninput = () => {
+      absurdityValue.textContent = absurditySlider.value;
+    };
+
+    function dumbPredict(topic, absurdity) {
+      const nonsense = [
+        "will be replaced by dancing llamas",
+        "is secretly powered by potatoes",
+        "will collapse under the weight of cheese",
+        "will time travel back to 1999",
+        "will merge with TikTok and start singing",
+        "will be outlawed by ducks",
+        "will float away into space",
+        "will explode with confetti",
+        "will turn into a giant pancake",
+        "will become the new national anthem"
+      ];
+      const idx = Math.floor(Math.random() * nonsense.length);
+      return `${topic || "The world"} ${nonsense[idx]} (Absurdity ${absurdity})`;
+    }
+
+    function generatePrediction() {
+      const topic = document.getElementById("topicInput").value;
+      const absurdity = absurditySlider.value;
+      const p = document.createElement("div");
+      p.className = "prediction";
+      const text = document.createElement("p");
+      text.textContent = dumbPredict(topic, absurdity);
+      const copyBtn = document.createElement("button");
+      copyBtn.textContent = "Copy";
+      copyBtn.onclick = () => navigator.clipboard.writeText(text.textContent);
+      p.appendChild(text);
+      p.appendChild(copyBtn);
+      predictionsDiv.prepend(p);
+    }
+
+    function generateMany() {
+      for (let i = 0; i < 10; i++) {
+        generatePrediction();
+      }
+    }
+  </script>
 </body>
 </html>
